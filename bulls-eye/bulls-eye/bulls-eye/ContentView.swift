@@ -59,7 +59,9 @@ struct ContentView: View {
             Spacer()
             // Score row
             HStack {
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/) {
+                Button(action: {
+                    self.startNewGame()
+                }) {
                     Text("Start Over")
                         .multilineTextAlignment(.leading)
                 }
@@ -152,6 +154,13 @@ struct ContentView: View {
             title = "Are you even trying?"
         }
         return title
+    }
+    
+    func startNewGame() {
+        score = 0
+        round = 1
+        sliderValue = 50.0
+        target = Int.random(in: 0...100)
     }
     
 }
