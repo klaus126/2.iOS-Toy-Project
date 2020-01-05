@@ -43,7 +43,7 @@ struct ContentView: View {
             }
             .alert(isPresented: $whosThereIsVisible) {() -> Alert in
                 //let roundedValue = Int(sliderValue.rounded())
-                return Alert(title: Text("Hello there"),
+                return Alert(title: Text(alertTitle()),
                              message: Text("The slider value is \(sliderValueRounded()).\n" +
                                         "You scored \(pointsForCurrentRound()) points this round."),
                              dismissButton: .default(Text("Awesome")) {
@@ -93,9 +93,22 @@ struct ContentView: View {
         return Int(sliderValue.rounded()) // 한줄인 경우는 return이라고 굳이 안해줘도 된다. type inference
     }
     
+    func amountOff() -> Int {
+        abs(target - sliderValueRounded())
+    }
     
     func pointsForCurrentRound() -> Int {
-        return 100 - abs(target - sliderValueRounded())
+        let maxScore = 100
+        let difference = amountOff()
+        let bonus: Int
+        if difference == 0 {
+            bonus = 100
+        } else if difference == 1 {
+            bonus = 50
+        } else {
+            bonus = 0
+        }
+        return maxScore - difference + bonus
         
         /*
         if roundedValue > self.target {
@@ -126,6 +139,21 @@ struct ContentView: View {
     }*/
     
     }
+    
+    func alertTitle() -> String {
+        let difference = amountOff()
+        let title: String
+        
+        if difference == 0 {
+            title = "Perfect!"
+        } else if difference <= 10 {
+            title = "Not bad."
+        } else {
+            title = "Are you even trying?"
+        }
+        return title
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
