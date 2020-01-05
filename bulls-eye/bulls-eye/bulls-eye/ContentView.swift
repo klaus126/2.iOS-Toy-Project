@@ -27,7 +27,7 @@ struct ContentView: View {
             // Slider row
             HStack {
                 Text("0")
-                Slider(value: self.$sliderValue, in: 1...100)
+                Slider(value: self.$sliderValue, in: 0...100)
                 Text("100")
             }
             Spacer()
@@ -38,7 +38,7 @@ struct ContentView: View {
                 Text("Hit Me!")
             }
             .alert(isPresented: $whosThereIsVisible) {() -> Alert in
-                var roundedValue: Int = Int(self.sliderValue.rounded())
+                let roundedValue: Int = Int(self.sliderValue.rounded())
                 return Alert(title: Text("Hello there"),
                              message: Text("The slider value is \(roundedValue).\n" +
                                         "You scored \(self.pointsForCurrentRound()) points this round."),
@@ -75,7 +75,40 @@ struct ContentView: View {
         }
     }
     func pointsForCurrentRound() -> Int {
-        return 999
+        
+        let roundedValue: Int = Int(self.sliderValue.rounded())
+        let difference: Int = abs(self.target - roundedValue)
+        let awardedPoints: Int = 100 - difference
+        return awardedPoints
+        
+        /*
+        if roundedValue > self.target {
+            difference = roundedValue - self.target
+        } else if self.target > roundedValue {
+            difference = self.target - roundedValue
+        } else {
+            difference = 0
+        }
+        */
+        
+        
+        /* if something is true {
+            then do this
+        } else if something else is true {
+         } else {
+         }
+        */
+
+        
+    /*func pointsForCurrentRound() -> Int {
+        var sliderValue = roundedValue
+        var positiveSliderValue: Int
+        if sliderValue < -1 {
+            positiveSliderValue = sliderValue * (-1)
+        }
+        return positiveSliderValue
+    }*/
+    
     }
 }
 
