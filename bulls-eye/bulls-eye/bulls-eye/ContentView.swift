@@ -10,9 +10,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var whosThereIsVisible: Bool = false
-    @State var sliderValue: Double = 50.0
-    @State var target: Int = Int.random(in: 1...100)
+    @State var whosThereIsVisible = false
+    @State var sliderValue = 50.0
+    @State var target = Int.random(in: 1...100)
     
     var body: some View {
         VStack {
@@ -20,14 +20,14 @@ struct ContentView: View {
             // Target row
             HStack {
                 Text("Put the bullseye as close as you can to: ")
-                Text("\(self.target)")
+                Text("\(target)")
             }
             Spacer()
             
             // Slider row
             HStack {
                 Text("0")
-                Slider(value: self.$sliderValue, in: 0...100)
+                Slider(value: $sliderValue, in: 0...100)
                 Text("100")
             }
             Spacer()
@@ -38,10 +38,10 @@ struct ContentView: View {
                 Text("Hit Me!")
             }
             .alert(isPresented: $whosThereIsVisible) {() -> Alert in
-                let roundedValue: Int = Int(self.sliderValue.rounded())
+                //let roundedValue = Int(sliderValue.rounded())
                 return Alert(title: Text("Hello there"),
-                             message: Text("The slider value is \(roundedValue).\n" +
-                                        "You scored \(self.pointsForCurrentRound()) points this round."),
+                             message: Text("The slider value is \(sliderValueRounded()).\n" +
+                                        "You scored \(pointsForCurrentRound()) points this round."),
                       dismissButton: .default(Text("Awesome"))
             )}
             
@@ -74,12 +74,20 @@ struct ContentView: View {
             .padding(.bottom, 20) //.padding(from where, distance)
         }
     }
+    
+    
+    /*
+    1. Global scope
+    2. Instance scope : content view | inside struct
+    3. Local scope : roundedValue / currentValue | inside func
+    */
+    func sliderValueRounded() -> Int {
+        return Int(sliderValue.rounded()) // 한줄인 경우는 return이라고 굳이 안해줘도 된다. type inference
+    }
+    
+    
     func pointsForCurrentRound() -> Int {
-        
-        let roundedValue: Int = Int(self.sliderValue.rounded())
-        let difference: Int = abs(self.target - roundedValue)
-        let awardedPoints: Int = 100 - difference
-        return awardedPoints
+        return 100 - abs(target - sliderValueRounded())
         
         /*
         if roundedValue > self.target {
@@ -126,3 +134,6 @@ struct ContentView_Previews: PreviewProvider {
  
  }
  */
+
+
+
