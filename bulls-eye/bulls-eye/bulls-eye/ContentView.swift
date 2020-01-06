@@ -126,7 +126,7 @@ struct ContentView: View {
                 Text("\(round)").modifier(ValueStyle())
                 
                 Spacer()
-                Button(action: {}) {
+                NavigationLink(destination: AboutView()) {
                     HStack{
                         Image("InfoIcon")
                         Text("info").modifier(ButtonSmallTextStyle())
@@ -139,6 +139,7 @@ struct ContentView: View {
         }
         .background(Image("Background"), alignment: .center)
         .accentColor(midnightBlue)
+    .navigationBarTitle("Bullseye")
     }
     
     
